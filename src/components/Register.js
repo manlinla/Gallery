@@ -1,7 +1,9 @@
 import React from 'react';
-import { Form, Input, Tooltip, Icon, Button } from 'antd';
+import { Form, Input, Tooltip, Icon, Button, message } from 'antd';
+import $ from 'jquery';
+import { API_ROOT } from "../constants"
+
 const FormItem = Form.Item;
-//import $ from 'jquery';
 
 
 class RegistrationForm extends React.Component {
@@ -14,6 +16,20 @@ class RegistrationForm extends React.Component {
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                $.ajax({
+                    url: `${API_ROOT}/signup`,
+                    method: 'POST',
+                    data: JSON.stringify({
+                        username: values.username,
+                        password: values.password,
+                    })
+                }).then((response) => {
+                    message.success(response);
+                }, (response) => {
+                    message.error(response.responseText);
+                }).catch((error) => {
+                    console.log(error);
+                });
             }
         });
     }
@@ -39,7 +55,6 @@ class RegistrationForm extends React.Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { autoCompleteResult } = this.state;
 
         const formItemLayout = {
             labelCol: {
@@ -69,34 +84,6 @@ class RegistrationForm extends React.Component {
 
                 <FormItem
                     {...formItemLayout}
-                    label="Password"
-                >
-                    {getFieldDecorator('password', {
-                        rules: [{
-                            required: true, message: 'Please input your password!',
-                        }, {
-                            validator: this.validateToNextPassword,
-                        }],
-                    })(
-                        <Input type="password" />
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="Confirm Password"
-                >
-                    {getFieldDecorator('confirm', {
-                        rules: [{
-                            required: true, message: 'Please confirm your password!',
-                        }, {
-                            validator: this.compareToFirstPassword,
-                        }],
-                    })(
-                        <Input type="password" onBlur={this.handleConfirmBlur} />
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
                     label={(
                         <span>
               Nickname&nbsp;
@@ -110,6 +97,36 @@ class RegistrationForm extends React.Component {
                         rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
                     })(
                         <Input />
+                    )}
+                </FormItem>
+
+                <FormItem
+                    {...formItemLayout}
+                    label="Password"
+                >
+                    {getFieldDecorator('password', {
+                        rules: [{
+                            required: true, message: 'Please input your password!',
+                        }, {
+                            validator: this.validateToNextPassword,
+                        }],
+                    })(
+                        <Input type="password" />
+                    )}
+                </FormItem>
+
+                <FormItem
+                    {...formItemLayout}
+                    label="Confirm Password"
+                >
+                    {getFieldDecorator('confirm', {
+                        rules: [{
+                            required: true, message: 'Please confirm your password!',
+                        }, {
+                            validator: this.compareToFirstPassword,
+                        }],
+                    })(
+                        <Input type="password" onBlur={this.handleConfirmBlur} />
                     )}
                 </FormItem>
 
