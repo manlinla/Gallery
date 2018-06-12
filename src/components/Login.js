@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import { API_ROOT } from '../constants';
 import $ from 'jquery';
 
