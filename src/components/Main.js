@@ -6,13 +6,14 @@ import { Home } from './Home';
 
 
 export class Main extends React.Component {
+
     getLogin = () => {
         return this.props.isLoggedIn ? <Redirect to="/home"/> : <Login handleLogin={this.props.handleLogin}/>;
-    }
+    } //if logged in redirect to home page; if not go to login
 
     getHome = () => {
         return this.props.isLoggedIn ? <Home/> : <Redirect to="/login"/>;
-    }
+    } //go to home page only when logged in
 
     getRoot = () => {
         return <Redirect to="/login"/>

@@ -1,16 +1,17 @@
 import React from 'react';
 import { Form, Input, Tooltip, Icon, Button, message } from 'antd';
 import $ from 'jquery';
-import { API_ROOT } from "../constants"
+import { API_ROOT } from "../constants";
+import { Link } from 'react-router-dom';
 
 const FormItem = Form.Item;
-
 
 class RegistrationForm extends React.Component {
     state = {
         confirmDirty: false,
         autoCompleteResult: [],
     };
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
@@ -25,6 +26,7 @@ class RegistrationForm extends React.Component {
                     })
                 }).then((response) => {
                     message.success(response);
+                    this.props.history.push('/login');
                 }, (response) => {
                     message.error(response.responseText);
                 }).catch((error) => {
@@ -33,18 +35,21 @@ class RegistrationForm extends React.Component {
             }
         });
     }
+
     handleConfirmBlur = (e) => {
         const value = e.target.value;
         this.setState({ confirmDirty: this.state.confirmDirty || !!value });
     }
+
     compareToFirstPassword = (rule, value, callback) => {
         const form = this.props.form;
         if (value && value !== form.getFieldValue('password')) {
-            callback('Two passwords that you enter is inconsistent!');
+            callback('The passwords are inconsistent!');
         } else {
             callback();
         }
     }
+
     validateToNextPassword = (rule, value, callback) => {
         const form = this.props.form;
         if (value && this.state.confirmDirty) {
@@ -86,15 +91,15 @@ class RegistrationForm extends React.Component {
                     {...formItemLayout}
                     label={(
                         <span>
-              Nickname&nbsp;
+                            Username&nbsp;
                             <Tooltip title="What do you want others to call you?">
-                <Icon type="question-circle-o" />
-              </Tooltip>
-            </span>
+                                <Icon type="question-circle-o" />
+                            </Tooltip>
+                        </span>
                     )}
                 >
-                    {getFieldDecorator('nickname', {
-                        rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+                    {getFieldDecorator('username', {
+                        rules: [{ required: true, message: 'Please input your username!', whitespace: true }],
                     })(
                         <Input />
                     )}
@@ -140,6 +145,7 @@ class RegistrationForm extends React.Component {
 
                 <FormItem {...tailFormItemLayout}>
                     <Button type="primary" htmlType="submit">Register</Button>
+                    <p>I already have an account, go back to <Link to="/login">login</Link></p>
                 </FormItem>
             </Form>
         );

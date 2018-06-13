@@ -1,6 +1,6 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
-//import { Link } from 'react-router-dom';
+import { Form, Icon, Input, Button, message } from 'antd';
+import { Link } from 'react-router-dom';
 import { API_ROOT } from '../constants';
 import $ from 'jquery';
 
@@ -50,21 +50,15 @@ class NormalLoginForm extends React.Component {
                     )}
                 </FormItem>
                 <FormItem>
-                    {getFieldDecorator('remember', {
-                        valuePropName: 'checked',
-                        initialValue: true,
-                    })(
-                        <Checkbox>Remember me</Checkbox>
-                    )}
-                    <a className="login-form-forgot" href="">Forgot password</a>
                     <Button type="primary" htmlType="submit" className="login-form-button">
                         Log in
                     </Button>
-                    Or <a href="">register now!</a>
+                    Or <Link to="/register">register here!</Link>
                 </FormItem>
             </Form>
         );
     }
 }
+
 
 export const Login = Form.create()(NormalLoginForm);
