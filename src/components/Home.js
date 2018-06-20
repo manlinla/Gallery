@@ -1,6 +1,7 @@
 import React from 'react';
-import { GEO_OPTIONS } from '../constants';
+import {API_ROOT, GEO_OPTIONS, POS_KEY, AUTH_PREFIX, TOKEN_KEY} from '../constants';
 import { Tabs, Button } from 'antd';
+import $ from 'jquery';
 
 const TabPane = Tabs.TabPane;
 
@@ -31,11 +32,31 @@ export class Home extends React.Component {
     onSuccessLoadGeoLocation = (position) => {
         this.setState({loadingGeoLocation: false});
         console.log(position);
+        const { latitude, longtitude } = position.coords;
+        localStorage.setItem(POS_KEY, JSON.stringify({ lat: latitude, lon: longtitude}));
+        this.loadNearbyPosts();
     }
 
     onFailedLoadGeoLocation = (error) => {
         this.setState({loadingGeoLocation: false});
         console.log(error);
+    }
+
+    loadNearbyPosts = () => {
+        const { lat, lon } = JSON.parse(localStorage.getItem(POS_KEY));
+        $.ajax({
+            url: `${API_ROOT}/search?lat=${lat}&lon=${lon}&range=200`,
+            method: 'GET',
+            headers: {
+                Authorization: `${AUTH_PREFIX} ${localStorage.getItem(TOKEN_KEY)}`,
+            },
+        }).then((response) => {
+            console.log(response);
+            }, (response) => {
+            console.log(response.responseText);
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 
     // conditional render
