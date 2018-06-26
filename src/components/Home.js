@@ -10,6 +10,7 @@ export class Home extends React.Component {
     state = {
         loadingGeoLocation: false,
         // state management: start with false, set to true after loaded
+        //loadingPost: false
     }
 
     componentDidMount() {
@@ -45,7 +46,7 @@ export class Home extends React.Component {
     loadNearbyPosts = () => {
         const { lat, lon } = JSON.parse(localStorage.getItem(POS_KEY));
         $.ajax({
-            url: `${API_ROOT}/search?lat=${lat}&lon=${lon}&range=200`,
+            url: `${API_ROOT}/search?lat=${lat}&lon=${lon}&range=2000`,
             method: 'GET',
             headers: {
                 Authorization: `${AUTH_PREFIX} ${localStorage.getItem(TOKEN_KEY)}`,
