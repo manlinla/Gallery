@@ -74,10 +74,24 @@ export class Home extends React.Component {
             return <Spin tip="Loading Geo Location"/>;
         } else if (this.state.loadingPosts) {
             return <Spin tip="Loading Posts"/>;
-        } else {
-            return '';
+        } else if (this.state.posts && this.state.posts.length > 0) {
+            const images = this.state.posts.map((post) => {
+                return {
+                    user: post.user,
+                    src: post.url,
+                    thumbnail: post.url,
+                    thumbnailWidth: 400,
+                    thumbnailHeight: 300,
+                    caption: post.message,
+                }
+            });
+            return <Gallery images={images}/>;
+        }
+        else {
+            return null;
         }
     }
+
     // conditional render
     render() {
         const operations = <Button type="primary">Create New Post</Button>;
