@@ -67,8 +67,8 @@ export class Home extends React.Component {
     getGalleyPanelContent = () => {
         if (this.state.error) { //this.state!!
             return <div>
-                {this.state.error};
-            </div>
+                {this.state.error}
+            </div>;
         }
         else if (this.state.loadingGeoLocation) {
             return <Spin tip="Loading Geo Location"/>;
@@ -83,7 +83,7 @@ export class Home extends React.Component {
         const operations = <Button type="primary">Create New Post</Button>;
 
         return (
-            <div>
+            <div className="main-tabs">
                 <Tabs tabBarExtraContent={operations}>
                     <TabPane tab="Gallery" key="1">
                         {this.getGalleyPanelContent()}
