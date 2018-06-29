@@ -2,6 +2,7 @@ import React from 'react';
 import {API_ROOT, GEO_OPTIONS, POS_KEY, AUTH_PREFIX, TOKEN_KEY} from '../constants';
 import { Tabs, Button, Spin } from 'antd';
 import $ from 'jquery';
+import { Gallery } from "./Gallery"
 
 const TabPane = Tabs.TabPane;
 
