@@ -1,8 +1,9 @@
 import React from 'react';
 import {API_ROOT, GEO_OPTIONS, POS_KEY, AUTH_PREFIX, TOKEN_KEY} from '../constants';
-import { Tabs, Button, Spin } from 'antd';
+import { Tabs, Spin } from 'antd';
 import $ from 'jquery';
 import { Gallery } from "./Gallery"
+import { CreatePostButton } from "./CreatePostButton"
 
 const TabPane = Tabs.TabPane;
 
@@ -95,8 +96,9 @@ export class Home extends React.Component {
 
     // conditional render
     render() {
-        const operations = <Button type="primary">Create New Post</Button>;
-
+        // const operations = <Button type="primary">Create New Post</Button>;
+        // replace operations with modal button
+        const operations = <CreatePostButton/>;
         return (
             <div className="main-tabs">
                 <Tabs tabBarExtraContent={operations}>
