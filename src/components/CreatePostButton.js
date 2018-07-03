@@ -1,6 +1,8 @@
 import { Modal, Button } from 'antd';
 import React from 'react';
 import { WrappedCreatePostForm } from './CreatePostForm';
+import $ from 'jquery';
+import {API_ROOT, POS_KEY, TOKEN_KEY, AUTH_PREFIX} from "../constants";
 
 export class CreatePostButton extends React.Component {
     state = {
@@ -17,9 +19,33 @@ export class CreatePostButton extends React.Component {
 
     handleOk = () => {
         this.setState({
-            ModalText: 'The modal will be closed after two seconds',
             confirmLoading: true,
+            // visual indicator; happens after clicking the button, before uploading request
         });
+        this.form.validateFields((err, values) => {
+            const formData = new FormData();
+            const { lat, lon } = JSON.parse(localStorage.getItem(POS_KEY));
+            formData.set('message', values.message);
+            formData.set('lat', lat);
+            formData.set('lon', lon);
+            formData.set('image', values.image[0].originFileObj);
+
+            if (!err) {
+                $.ajax({
+                    url: `${API_ROOT}/post`,
+                    method: 'POST',
+                    data: formData,
+                    headers: {
+                        Authorization: `${AUTH_PREFIX} ${localStorage.getItem(TOKEN_KEY)}`,
+                    }
+                    processData: false,
+                    contentType: false,
+                    dataType: 'text',
+                });
+                //$.ajax returns a promise
+            }
+        });
+        // send request when the buttons spinning
         setTimeout(() => {
             this.setState({
                 visible: false,
@@ -37,6 +63,10 @@ export class CreatePostButton extends React.Component {
         });
     }
 
+    saveFormRef = (form) => {
+        this.form = form;
+    }
+
     render() {
         const { visible, confirmLoading } = this.state;
         return (
@@ -50,7 +80,8 @@ export class CreatePostButton extends React.Component {
                        confirmLoading={confirmLoading}
                        onCancel={this.handleCancel}
                 >
-                    <WrappedCreatePostForm/>
+                    <WrappedCreatePostForm ref = {this.saveFormRef}/>
+                    {/*use component instance*/}
                 </Modal>
             </div>
         );
