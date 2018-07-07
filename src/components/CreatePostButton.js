@@ -1,4 +1,6 @@
-import { Modal, Button } from 'antd';
+
+
+import { Modal, Button, message } from 'antd';
 import React from 'react';
 import { WrappedCreatePostForm } from './CreatePostForm';
 import $ from 'jquery';
@@ -6,7 +8,7 @@ import {API_ROOT, POS_KEY, TOKEN_KEY, AUTH_PREFIX} from "../constants";
 
 export class CreatePostButton extends React.Component {
     state = {
-        ModalText: 'Content of the modal',
+        //ModalText: 'Content of the modal',
         visible: false,
         confirmLoading: false,
     }
@@ -22,36 +24,47 @@ export class CreatePostButton extends React.Component {
             confirmLoading: true,
             // visual indicator; happens after clicking the button, before uploading request
         });
-        this.form.validateFields((err, values) => {
-            const formData = new FormData();
-            const { lat, lon } = JSON.parse(localStorage.getItem(POS_KEY));
-            formData.set('message', values.message);
-            formData.set('lat', lat);
-            formData.set('lon', lon);
-            formData.set('image', values.image[0].originFileObj);
 
+        this.form.validateFields((err, values) => {
             if (!err) {
+                const formData = new FormData();
+                const { lat, lon } = JSON.parse(localStorage.getItem(POS_KEY));
+                formData.set('message', values.message);
+                formData.set('lat', lat);
+                formData.set('lon', lon);
+                formData.set('image', values.image[0].originFileObj);
+
                 $.ajax({
                     url: `${API_ROOT}/post`,
                     method: 'POST',
                     data: formData,
                     headers: {
                         Authorization: `${AUTH_PREFIX} ${localStorage.getItem(TOKEN_KEY)}`,
-                    }
+                    },
                     processData: false,
                     contentType: false,
                     dataType: 'text',
+                }).then((response) => {
+                    message.success('Created successfully!');
+                    this.form.resetFields(); // reset the pic uploaded last time
+                    this.setState({ visible: false, confirmLoading: false });
+                    this.props.loadNearbyPosts();
+                }, (response) => {
+                    message.error(response.responseText);
+                    this.setState({ visible: false, confirmLoading: false }); // reset after each submit
+                }).catch((error) => {
+                    console.log(error);
                 });
                 //$.ajax returns a promise
             }
         });
         // send request when the buttons spinning
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-                confirmLoading: false,
-            });
-        }, 2000);
+        // setTimeout(() => {
+        //     this.setState({
+        //         visible: false,
+        //         confirmLoading: false,
+        //     });
+        // }, 2000); --> moved to successful request
     }
     //confirmLoading: false -> reset after handling ok
     // control create new post window (modal) by setting "visible" state
@@ -68,6 +81,7 @@ export class CreatePostButton extends React.Component {
     }
 
     render() {
+        //const { visible, confirmLoading, Mo }
         const { visible, confirmLoading } = this.state;
         return (
             <div>
