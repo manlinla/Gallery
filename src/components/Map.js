@@ -1,36 +1,26 @@
 import React from 'react';
-import { GoogleMap,  withScriptjs, withGoogleMap } from 'react-google-maps';
+import { GoogleMap,  Marker, withScriptjs, withGoogleMap } from 'react-google-maps';
+import { Marker } from "./Marker";
 
 export class Map extends React.Component {
-    reloadMarkers = () => {
-        const center = this.map.getCenter();
-        const location = { lat: center.lat(), lon: center.lng() };
-        const range = this.getRange();
-        this.props.loadNearByPosts(location, range);
-    }
-
-    getRange = () => {
-        const google = window.google;
-        const center = this.map.getCenter();
-        const bounds = this.map.getBounds();
-        if (center && bounds) {
-            const ne = bounds.getNorthEast();
-            const right = new google.maps.LatLng(center.lat(), ne.lng());
-            return 0.001 * google.maps.geometry.spherical.computeDistanceBetween(center, right);
-        }
-    }
 
 
     render() {
-        <GoogleMap
-            ref={this.getMapRef}
-            onDragEnd={this.reloadMarkers}
-            onZoomChanged={this.reloadMarkers}
-            defaultZoom={11}
-            defaultCenter={{ lat: lat, lng: lon }}
-        >
-            {this.props.posts.map((post) => <AroundMarker key={post.url} post={post}/> )}
-        </GoogleMap>
+        const locations = [
+            {lat: 123.1, lng: 150},
+            {lat: 123.2, lng: 150},
+        ];
+
+        return(
+            <GoogleMap
+                defaultZoom={11}
+                defaultCenter={{ lat: 35, lng: 150 }}
+            >
+                {locations.map( (loc) => <Marker location = {loc}/> )}
+                {/*map an array of location into an array of marker; than display at google map
+                DATA VISUALIZATION*/}
+            </GoogleMap>
+        );
     }
 }
 
