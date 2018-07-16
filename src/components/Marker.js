@@ -1,7 +1,7 @@
 import React from 'react';
 import { Marker, InfoWindow } from 'react-google-maps';
 
-export class Marker extends React.Component {
+export class Markers extends React.Component {
     state = {
         isOpen: false,
     }

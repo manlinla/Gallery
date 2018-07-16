@@ -1,11 +1,11 @@
 import React from 'react';
-import { GoogleMap,  Marker, withScriptjs, withGoogleMap } from 'react-google-maps';
-import { Marker } from "./Marker";
+import { GoogleMap, withScriptjs, withGoogleMap } from 'react-google-maps';
+import { Markers } from "./Marker";
+import { POS_KEY } from "../constants";
 
 export class Map extends React.Component {
-
-
     render() {
+        const { lat, lon } = JSON.parse(localStorage.getItem(POS_KEY));
         const locations = [
             {lat: 123.1, lng: 150},
             {lat: 123.2, lng: 150},
@@ -14,9 +14,9 @@ export class Map extends React.Component {
         return(
             <GoogleMap
                 defaultZoom={11}
-                defaultCenter={{ lat: 35, lng: 150 }}
+                defaultCenter={{ lat, lng: lon }}
             >
-                {locations.map( (loc) => <Marker location = {loc}/> )}
+                {locations.map( (loc) => <Markers location = {loc}/> )}
                 {/*map an array of location into an array of marker; than display at google map
                 DATA VISUALIZATION*/}
             </GoogleMap>

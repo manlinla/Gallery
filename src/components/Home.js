@@ -42,6 +42,7 @@ export class Home extends React.Component {
         localStorage.setItem(POS_KEY, JSON.stringify({lat: latitude, lon: longitude}));
         this.loadNearbyPosts();
     }
+    //store current geo location into localStorage
 
     onFailedLoadGeolocation = () => {
         this.setState({ loadingGeoLocation: false, error: 'Failed to load geo location!' });
