@@ -4,7 +4,7 @@ import { Modal, Button, message } from 'antd';
 import React from 'react';
 import { WrappedCreatePostForm } from './CreatePostForm';
 import $ from 'jquery';
-import {API_ROOT, POS_KEY, TOKEN_KEY, AUTH_PREFIX} from "../constants";
+import {API_ROOT, POS_KEY, TOKEN_KEY, AUTH_PREFIX, LOC_SHAKE} from "../constants";
 
 export class CreatePostButton extends React.Component {
     state = {
@@ -29,9 +29,10 @@ export class CreatePostButton extends React.Component {
             if (!err) {
                 const formData = new FormData();
                 const { lat, lon } = JSON.parse(localStorage.getItem(POS_KEY));
+                formData.set('lat', lat + Math.random() * LOC_SHAKE * 2 - LOC_SHAKE);
+                formData.set('lon', lon + Math.random() * LOC_SHAKE * 2 - LOC_SHAKE);
+                //to have it between (-1,1); so that several markers'd show up + vary from the exact locs
                 formData.set('message', values.message);
-                formData.set('lat', lat);
-                formData.set('lon', lon);
                 formData.set('image', values.image[0].originFileObj);
 
                 $.ajax({
