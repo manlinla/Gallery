@@ -4,6 +4,7 @@
 @import 'Login.css';
 @import 'Header.css';
 @import 'Home.css';
+@import 'Marker.css';
 
 .App {
     text-align: center;

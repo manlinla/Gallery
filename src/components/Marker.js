@@ -16,15 +16,19 @@ export class Markers extends React.Component {
     }
 
     render() {
-        const { location } = this.props.post;
+        const { location, url, user, message } = this.props.post;
         return(
             <Marker
                 position = {{ lat: location.lat, lng: location.lon }}
-                onClick = {this.onToggleOpen}
+                onMouseOver={this.onToggleOpen}
+                onMouseOut={this.onToggleOpen}
             >
                 {this.state.isOpen ?
                     <InfoWindow onCloseClick={this.onToggleOpen}>
-                        <div>hi</div>
+                        <div>
+                            <img className="marker-image" src={url}/>
+                            <p>{`${user}: ${message}`}</p>
+                        </div>
                     </InfoWindow> : null }
             {/*conditional render of InfoWindow; control the state of SINGLE marker*/}
             </Marker>);
