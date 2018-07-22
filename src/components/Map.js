@@ -16,6 +16,18 @@ export class Map extends React.Component {
     getMapRef = (map) => {
         this.map = map;
     }
+
+    getRange = () => {
+        const google = window.google;
+        const center = this.map.getCenter();
+        const bounds = this.map.getBounds();
+        if (center && bounds) {
+            const ne = bounds.getNorthEast();
+            const right = new google.maps.LatLng(center.lat(), ne.lng());
+            return 0.001 * google.maps.geometry.spherical.computeDistanceBetween(center, right);
+        }
+    }
+
     render() {
         const { lat, lon } = JSON.parse(localStorage.getItem(POS_KEY));
         // const locations = [
