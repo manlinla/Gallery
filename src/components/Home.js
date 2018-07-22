@@ -73,9 +73,10 @@ export class Home extends React.Component {
         }
     }
 
-    loadNearbyPosts = () => {
-        const { lat, lon } = JSON.parse(localStorage.getItem(POS_KEY));
+    loadNearbyPosts = (location) => {
         this.setState({ loadingPosts: true, error: ''});
+        const { lat, lon } = location ? location : JSON.parse(localStorage.getItem(POS_KEY));
+        // if its dragged, use the new location
         return $.ajax({
             url: `${API_ROOT}/search?lat=${lat}&lon=${lon}&range=20`,
             method: 'GET',

@@ -4,6 +4,18 @@ import { Markers } from "./Marker";
 import { POS_KEY } from "../constants";
 
 export class Map extends React.Component {
+    // reload after dragging the map
+    reloadMarker = () => {
+        const center = this.map.getCenter();
+        const location = { lat: center.lat(), lon: center.lng() }; // new location
+        const range = this.getRange();
+        this.props.loadNearByPosts(location, range);
+    }
+
+    // get the new center of the map
+    getMapRef = (map) => {
+        this.map = map;
+    }
     render() {
         const { lat, lon } = JSON.parse(localStorage.getItem(POS_KEY));
         // const locations = [
@@ -13,6 +25,7 @@ export class Map extends React.Component {
 
         return(
             <GoogleMap
+                onDragEnd={this.reloadMarker}
                 defaultZoom={11}
                 defaultCenter={{ lat, lng: lon }}
             >

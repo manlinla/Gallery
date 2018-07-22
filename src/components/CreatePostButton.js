@@ -1,5 +1,3 @@
-
-
 import { Modal, Button, message } from 'antd';
 import React from 'react';
 import { WrappedCreatePostForm } from './CreatePostForm';
