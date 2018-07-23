@@ -5,27 +5,17 @@ import { POS_KEY } from "../constants";
 
 export class Map extends React.Component {
     // reload after dragging the map
-    reloadMarker = () => {
+    reloadMarkers = () => {
         const center = this.map.getCenter();
         const location = { lat: center.lat(), lon: center.lng() }; // new location
-        const range = this.getRange();
-        this.props.loadNearByPosts(location, range);
+        //const range = this.getRange();
+        this.props.loadNearbyPosts(location, range);//use new center location to trigger new nearby posts
     }
 
     // get the new center of the map
     getMapRef = (map) => {
         this.map = map;
-    }
-
-    getRange = () => {
-        const google = window.google;
-        const center = this.map.getCenter();
-        const bounds = this.map.getBounds();
-        if (center && bounds) {
-            const ne = bounds.getNorthEast();
-            const right = new google.maps.LatLng(center.lat(), ne.lng());
-            return 0.001 * google.maps.geometry.spherical.computeDistanceBetween(center, right);
-        }
+        window.map = map;
     }
 
     render() {
@@ -37,7 +27,8 @@ export class Map extends React.Component {
 
         return(
             <GoogleMap
-                onDragEnd={this.reloadMarker}
+                ref={this.getMapRef}
+                onDragEnd={this.reloadMarkers}
                 defaultZoom={11}
                 defaultCenter={{ lat, lng: lon }}
             >

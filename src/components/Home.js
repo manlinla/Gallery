@@ -84,7 +84,7 @@ export class Home extends React.Component {
                 Authorization: `${AUTH_PREFIX} ${localStorage.getItem(TOKEN_KEY)}`
             },
         }).then((response) => {
-            this.setState({ posts: response, loadingPosts: false, error: '' });
+            this.setState({ posts: response || [], loadingPosts: false, error: '' });//|| [] is to empty array to avoid NPE
             console.log(response);
         }, (error) => {
             this.setState({ loadingPosts: false, error: error.responseText });
@@ -112,7 +112,7 @@ export class Home extends React.Component {
                         containerElement={<div style={{ height: `600px` }} />}
                         mapElement={<div style={{ height: `100%` }} />}
                         posts={this.state.posts} // to pass the loc info into Map.js
-                        loadNearByPosts={this.loadNearByPosts}
+                        loadNearbyPosts={this.loadNearbyPosts}
                     />
                 </TabPane>
             </Tabs>
