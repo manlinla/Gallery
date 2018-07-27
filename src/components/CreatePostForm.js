@@ -47,7 +47,6 @@ class CreatePostForm extends React.Component {
                             // required == true <=> have red star on the screen
                             valuePropName: 'fileList',
                             getValueFromEvent: this.normFile,
-                            rules: [{ required: true, message: 'Please select an image.' }],
                         })(
                             <Upload.Dragger name="files" beforeUpload={this.beforeUpload}>
                                 <p className="ant-upload-drag-icon">
@@ -66,5 +65,5 @@ class CreatePostForm extends React.Component {
 }
 
 export const WrappedCreatePostForm = Form.create()(CreatePostForm);
-{/*Form.create() -> high order component to wrap CreatePostForm
-(our component) in order to have auto check function*/}
+/*Form.create() -> high order component to wrap CreatePostForm
+(our component) in order to have auto check function*/

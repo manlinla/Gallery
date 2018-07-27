@@ -26,7 +26,7 @@ export class Markers extends React.Component {
                 {this.state.isOpen ?
                     <InfoWindow onCloseClick={this.onToggleOpen}>
                         <div>
-                            <img className="marker-image" src={url}/>
+                            <img className="marker-image" src={url} alt={`${user}: ${message}`}/>
                             <p>{`${user}: ${message}`}</p>
                         </div>
                     </InfoWindow> : null }
