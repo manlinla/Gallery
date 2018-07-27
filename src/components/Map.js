@@ -8,8 +8,20 @@ export class Map extends React.Component {
     reloadMarkers = () => {
         const center = this.map.getCenter();
         const location = { lat: center.lat(), lon: center.lng() }; // new location
-        //const range = this.getRange();
+        const range = this.getRange();
         this.props.loadNearbyPosts(location, range);//use new center location to trigger new nearby posts
+    }
+
+    getRange = () => {
+        const google = window.google;
+        const center = this.map.getCenter();
+        const bounds = this.map.getBounds();
+        //bounds: 4 corners
+        if (center && bounds) {
+            const ne = bounds.getNorthEast();
+            const right = new google.maps.LatLng(center.lat(), ne.lng());
+            return 0.001 * google.maps.geometry.spherical.computeDistanceBetween(center, right);
+        }
     }
 
     // get the new center of the map
@@ -29,10 +41,11 @@ export class Map extends React.Component {
             <GoogleMap
                 ref={this.getMapRef}
                 onDragEnd={this.reloadMarkers}
+                onZoomChanged={this.reloadMarkers}
                 defaultZoom={11}
                 defaultCenter={{ lat, lng: lon }}
             >
-                {this.props.posts.map((post) => <Markers key={post.url} post={post}/> )}
+                {this.props.posts.map((post) => <Markers key={post.url} post={post}/>)}
                 {/*map an array of location into an array of marker; than display at google map
                 DATA VISUALIZATION*/}
             </GoogleMap>
